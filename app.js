@@ -1,5 +1,5 @@
 if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'caloriasfit-v13' && k !== 'soto-v1') caches.delete(k); }));
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'caloriasfit-v14' && k !== 'soto-v1') caches.delete(k); }));
 }
 
 const DEFAULT_FOODS = {
@@ -213,25 +213,27 @@ function createRing(size, stroke, colorA, colorB){
   prog.setAttribute("stroke-dasharray", c);
   prog.setAttribute("stroke-dashoffset", c);
   prog.setAttribute("transform", "rotate(-90 " + size/2 + " " + size/2 + ")");
-  prog.style.transition = "stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)";
+  prog.style.transition = "stroke-dashoffset .7s cubic-bezier(.34,1.56,.64,1)";
   svg.appendChild(track); svg.appendChild(prog);
   return { svg, set(p){ prog.style.strokeDashoffset = c * (1 - Math.min(p, 1)); } };
 }
-const ringC = createRing(30, 4, "#5AC8FA", "#0A84FF"); document.getElementById("ringC").appendChild(ringC.svg);
-const ringP = createRing(30, 4, "#FF7A9C", "#FF375F"); document.getElementById("ringP").appendChild(ringP.svg);
-const ringF = createRing(30, 4, "#FFC15E", "#FF9F0A"); document.getElementById("ringF").appendChild(ringF.svg);
 const kcalRing = createRing(150, 14, "#6EE7A0", "#16A34A");
 document.getElementById("bigRing").prepend(kcalRing.svg);
 
 function animateNumber(el, to){
   const from = parseInt(el.dataset.val || "0");
   el.dataset.val = to;
-  const start = performance.now(), dur = 400;
+  const start = performance.now(), dur = 550;
+  function easeOutBack(x){
+    const c1 = 1.70158, c3 = c1 + 1;
+    return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+  }
   function frame(t){
     const p = Math.min((t - start) / dur, 1);
-    const e = 1 - Math.pow(1 - p, 3);
-    el.textContent = Math.round(from + (to - from) * e);
+    const e = easeOutBack(p);
+    el.textContent = Math.max(0, Math.round(from + (to - from) * e));
     if (p < 1) requestAnimationFrame(frame);
+    else el.textContent = to;
   }
   requestAnimationFrame(frame);
 }
@@ -308,17 +310,20 @@ function editInline(span, current, commit){
 }
 
 /* ---------- RENDER ---------- */
+const MEAL_STRIPE_COLORS = ["#FFB020", "#FF9F0A", "#FF6B6B", "#8B5CF6", "#3B82F6", "#0EA5A5", "#EC4899"];
 function render(){
   const date = datePicker.value;
   if(!dataStore[date]) dataStore[date]={};
   const container = document.getElementById("meals");
   container.innerHTML = "";
 
-  meals.forEach(meal => {
+  meals.forEach((meal, mealIdx) => {
     if(!dataStore[date][meal]) dataStore[date][meal]={};
     const t = mealTotals(date, meal);
     const mealDiv = document.createElement("div");
     mealDiv.className = "meal";
+    mealDiv.style.borderLeftWidth = "4px";
+    mealDiv.style.borderLeftColor = MEAL_STRIPE_COLORS[mealIdx % MEAL_STRIPE_COLORS.length];
     const header = document.createElement("div");
     header.className = "meal-header";
     header.innerHTML = `
@@ -846,7 +851,7 @@ document.getElementById("bfSaveBtn").onclick = ()=>{
 function updateStats(){
   const s = calcStats();
   document.getElementById("statsGrid").innerHTML = `
-    <div class="stat"><div class="big">🔥 ${s.streak}</div><div class="lbl">días de racha</div></div>
+    <div class="stat streak-stat"><div class="big">${s.streak}</div><div class="lbl">🔥 días de racha</div></div>
     <div class="stat"><div class="big">${s.avg}</div><div class="lbl">kcal promedio (7d)</div></div>
     <div class="stat"><div class="big">🎯 ${s.adherence}%</div><div class="lbl">adherencia a meta</div></div>`;
 }
@@ -979,12 +984,20 @@ function updateSummary(){
   const t = dayTotals(datePicker.value);
   animateNumber(document.getElementById("totalKcalBig"), t.k);
   document.getElementById("goalLabel").textContent = goals.kcal;
-  kcalRing.set(t.k / goals.kcal);
+  const pct = t.k / goals.kcal;
+  kcalRing.set(pct);
   const mg = macroGoals();
-  ringC.set(t.c/mg.cg); ringP.set(t.p/mg.pg); ringF.set(t.f/mg.fg);
+  document.getElementById("barC").style.width = Math.min(100, Math.round((t.c/mg.cg)*100)) + "%";
+  document.getElementById("barP").style.width = Math.min(100, Math.round((t.p/mg.pg)*100)) + "%";
+  document.getElementById("barF").style.width = Math.min(100, Math.round((t.f/mg.fg)*100)) + "%";
   document.getElementById("carbsTotal").textContent = t.c+"g";
   document.getElementById("proteinTotal").textContent = t.p+"g";
   document.getElementById("fatTotal").textContent = t.f+"g";
+  const todayCard = document.querySelector(".today-card");
+  if (todayCard){
+    if (pct >= 1){ if (!todayCard.classList.contains("goal-hit")) todayCard.classList.add("goal-hit"); }
+    else todayCard.classList.remove("goal-hit");
+  }
 }
 function updateChart(){
   const ctx = document.getElementById("weeklyChart").getContext("2d");

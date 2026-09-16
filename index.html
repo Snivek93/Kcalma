@@ -52,10 +52,19 @@
   <div class="big-ring" id="bigRing">
     <div class="num"><div id="totalKcalBig">0</div><span class="goal-lbl">de <span id="goalLabel">2000</span> kcal</span></div>
   </div>
-  <div class="today-macros">
-    <div class="today-macro"><div class="tm-ring" id="ringC"></div><span class="tm-val" id="carbsTotal">0g</span><span class="tm-lbl">Carbs</span></div>
-    <div class="today-macro"><div class="tm-ring" id="ringP"></div><span class="tm-val" id="proteinTotal">0g</span><span class="tm-lbl">Proteína</span></div>
-    <div class="today-macro"><div class="tm-ring" id="ringF"></div><span class="tm-val" id="fatTotal">0g</span><span class="tm-lbl">Grasa</span></div>
+  <div class="macro-bars">
+    <div class="macro-bar-row">
+      <div class="macro-bar-head"><span class="mb-lbl">Carbs</span><span class="mb-val" id="carbsTotal">0g</span></div>
+      <div class="macro-bar-track"><div class="macro-bar-fill" id="barC"></div></div>
+    </div>
+    <div class="macro-bar-row">
+      <div class="macro-bar-head"><span class="mb-lbl">Proteína</span><span class="mb-val" id="proteinTotal">0g</span></div>
+      <div class="macro-bar-track"><div class="macro-bar-fill" id="barP"></div></div>
+    </div>
+    <div class="macro-bar-row">
+      <div class="macro-bar-head"><span class="mb-lbl">Grasa</span><span class="mb-val" id="fatTotal">0g</span></div>
+      <div class="macro-bar-track"><div class="macro-bar-fill" id="barF"></div></div>
+    </div>
   </div>
 </div>
 <div class="day-nav">
@@ -74,7 +83,7 @@
   <div class="card-title">Grupos del día</div>
   <div class="groups-grid" id="groupsGrid"></div>
 </div>
-<div class="card">
+<div class="card card-water">
   <div class="card-title" id="waterTitle">Hidratación</div>
   <div class="water-row" id="waterRow"></div>
 </div>
@@ -96,7 +105,7 @@
   </div>
   <div class="chart-body"><canvas id="weeklyChart"></canvas></div>
 </div>
-<div class="card">
+<div class="card card-micros">
   <div class="card-title">Micronutrientes del día</div>
   <div class="stats-grid four" id="microGrid"></div>
   <div class="hint">Suma los micronutrientes de tus alimentos específicos que tengan etiqueta.</div>
@@ -109,7 +118,7 @@
   <div class="hist-grid" id="histGrid"></div>
   <div class="stats-grid" id="histSummary" style="margin-top:12px"></div>
 </div>
-<div class="card">
+<div class="card card-weight">
   <div class="card-title">Peso corporal</div>
   <div id="weightEmpty"></div>
   <div class="weight-row">

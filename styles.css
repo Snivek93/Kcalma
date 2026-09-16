@@ -5,7 +5,7 @@
   --tint-today:rgba(52,199,89,.14); --tint-water:rgba(10,132,255,.14); --tint-weight:rgba(175,82,222,.14); --tint-micros:rgba(48,209,192,.14); }
 @media (prefers-color-scheme: dark){ :root[data-theme="auto"] { --bg:#000; --card:#1C1C1E; --text:#F5F5F7; --text2:#98989D; --accent-soft:rgba(48,209,88,.18); --ctrl:#2C2C2E; --ctrlbtn:#3A3A3C; --mealcontent:#111; --line:rgba(255,255,255,.07); --sheet:#1C1C1E; --sumry:rgba(28,28,30,.88); --tabbarbg:rgba(22,22,24,.92); --slider:#3A3A3C;
   --tint-today:rgba(52,199,89,.14); --tint-water:rgba(10,132,255,.14); --tint-weight:rgba(175,82,222,.14); --tint-micros:rgba(48,209,192,.14); } }
-* { box-sizing:border-box; margin:0; padding:0; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif; -webkit-tap-highlight-color:transparent; }
+* { box-sizing:border-box; margin:0; padding:0; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
 body { background:var(--bg); color:var(--text); padding-bottom:90px; font-variant-numeric:tabular-nums; }
 button { font-family:inherit; }
 :focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:6px; }

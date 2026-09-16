@@ -1,5 +1,5 @@
 if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'caloriasfit-v14' && k !== 'soto-v1') caches.delete(k); }));
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'caloriasfit-v15' && k !== 'soto-v1') caches.delete(k); }));
 }
 
 const DEFAULT_FOODS = {
@@ -245,7 +245,8 @@ function updateTopHeader(){
   const hour = new Date().getHours();
   el.textContent = hour < 12 ? "Buenos días ☀️" : hour < 19 ? "Buenas tardes 🌤️" : "Buenas noches 🌙";
   const t = dayTotals(datePicker.value);
-  pill.innerHTML = `🔥 ${t.k}/${goals.kcal} kcal`;
+  const remaining = goals.kcal - t.k;
+  pill.innerHTML = remaining >= 0 ? `🔥 ${remaining} kcal libres` : `🔥 ${Math.abs(remaining)} kcal de más`;
 }
 
 /* ---------- CÁLCULOS ---------- */
@@ -458,7 +459,7 @@ function changeQty(date, meal, food, amt, qtySpan, header){
   const t = mealTotals(date, meal);
   header.querySelector(".meal-kcal").textContent = t.k + " kcal";
   header.querySelector(".meal-macros").textContent = `C:${t.c}g P:${t.p}g G:${t.f}g`;
-  updateStats(); updateGroups(); updateHistory(); updateMicros(); updateSummary(); updateChart();
+  updateStats(); updateGroups(); updateHistory(); updateMicros(); updateSummary(); updateChart(); updateTopHeader();
 }
 function changeCustom(date, meal, id, amt){
   const m = dataStore[date][meal];

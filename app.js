@@ -1,5 +1,5 @@
 if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'caloriasfit-v12' && k !== 'soto-v1') caches.delete(k); }));
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'caloriasfit-v13' && k !== 'soto-v1') caches.delete(k); }));
 }
 
 const DEFAULT_FOODS = {
@@ -183,18 +183,32 @@ document.getElementById("tbBase").onclick = ()=> showView("base");
 document.getElementById("tbAjustes").onclick = ()=> showView("aj");
 
 /* ---------- ANILLOS ---------- */
-function createRing(size, stroke, color){
+let ringGradSeq = 0;
+function createRing(size, stroke, colorA, colorB){
   const ns = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(ns, "svg");
   svg.setAttribute("width", size); svg.setAttribute("height", size);
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
+  const gradId = "ringGrad" + (ringGradSeq++);
+
+  const defs = document.createElementNS(ns, "defs");
+  const grad = document.createElementNS(ns, "linearGradient");
+  grad.setAttribute("id", gradId);
+  grad.setAttribute("x1", "0%"); grad.setAttribute("y1", "0%");
+  grad.setAttribute("x2", "100%"); grad.setAttribute("y2", "100%");
+  const stop1 = document.createElementNS(ns, "stop"); stop1.setAttribute("offset", "0%"); stop1.setAttribute("stop-color", colorA);
+  const stop2 = document.createElementNS(ns, "stop"); stop2.setAttribute("offset", "100%"); stop2.setAttribute("stop-color", colorB);
+  grad.appendChild(stop1); grad.appendChild(stop2);
+  defs.appendChild(grad);
+  svg.appendChild(defs);
+
   const track = document.createElementNS(ns, "circle");
   track.setAttribute("cx", size/2); track.setAttribute("cy", size/2); track.setAttribute("r", r);
-  track.setAttribute("fill", "none"); track.setAttribute("stroke", "rgba(120,120,128,0.2)"); track.setAttribute("stroke-width", stroke);
+  track.setAttribute("fill", "none"); track.setAttribute("stroke", hexToRgba(colorB, 0.15)); track.setAttribute("stroke-width", stroke);
   const prog = document.createElementNS(ns, "circle");
   prog.setAttribute("cx", size/2); prog.setAttribute("cy", size/2); prog.setAttribute("r", r);
-  prog.setAttribute("fill", "none"); prog.setAttribute("stroke", color); prog.setAttribute("stroke-width", stroke);
+  prog.setAttribute("fill", "none"); prog.setAttribute("stroke", "url(#" + gradId + ")"); prog.setAttribute("stroke-width", stroke);
   prog.setAttribute("stroke-linecap", "round");
   prog.setAttribute("stroke-dasharray", c);
   prog.setAttribute("stroke-dashoffset", c);
@@ -203,10 +217,10 @@ function createRing(size, stroke, color){
   svg.appendChild(track); svg.appendChild(prog);
   return { svg, set(p){ prog.style.strokeDashoffset = c * (1 - Math.min(p, 1)); } };
 }
-const ringC = createRing(30, 4, "#0A84FF"); document.getElementById("ringC").appendChild(ringC.svg);
-const ringP = createRing(30, 4, "#FF375F"); document.getElementById("ringP").appendChild(ringP.svg);
-const ringF = createRing(30, 4, "#FF9F0A"); document.getElementById("ringF").appendChild(ringF.svg);
-const kcalRing = createRing(150, 14, "#34C759");
+const ringC = createRing(30, 4, "#5AC8FA", "#0A84FF"); document.getElementById("ringC").appendChild(ringC.svg);
+const ringP = createRing(30, 4, "#FF7A9C", "#FF375F"); document.getElementById("ringP").appendChild(ringP.svg);
+const ringF = createRing(30, 4, "#FFC15E", "#FF9F0A"); document.getElementById("ringF").appendChild(ringF.svg);
+const kcalRing = createRing(150, 14, "#6EE7A0", "#16A34A");
 document.getElementById("bigRing").prepend(kcalRing.svg);
 
 function animateNumber(el, to){

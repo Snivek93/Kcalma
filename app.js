@@ -1,5 +1,5 @@
 if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'caloriasfit-v10' && k !== 'soto-v1') caches.delete(k); }));
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'caloriasfit-v11' && k !== 'soto-v1') caches.delete(k); }));
 }
 
 const DEFAULT_FOODS = {

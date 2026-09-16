@@ -48,6 +48,16 @@
 </div>
 
 <div id="viewRegistro">
+<div class="today-card">
+  <div class="big-ring" id="bigRing">
+    <div class="num"><div id="totalKcalBig">0</div><span class="goal-lbl">de <span id="goalLabel">2000</span> kcal</span></div>
+  </div>
+  <div class="today-macros">
+    <div class="today-macro"><div class="tm-ring" id="ringC"></div><span class="tm-val" id="carbsTotal">0g</span><span class="tm-lbl">Carbs</span></div>
+    <div class="today-macro"><div class="tm-ring" id="ringP"></div><span class="tm-val" id="proteinTotal">0g</span><span class="tm-lbl">Proteína</span></div>
+    <div class="today-macro"><div class="tm-ring" id="ringF"></div><span class="tm-val" id="fatTotal">0g</span><span class="tm-lbl">Grasa</span></div>
+  </div>
+</div>
 <div class="day-nav">
   <button onclick="changeDay(-1)" aria-label="Día anterior">‹</button>
   <input type="date" id="datePicker" aria-label="Fecha">
@@ -220,34 +230,6 @@
 <div class="card">
   <div class="hint">Macros de grupos: Listas de Porciones del Dr. J. P. Soto (USDA).<br>Datos de productos: © Open Food Facts (licencia ODbL).</div>
 </div>
-</div>
-
-<div class="summary" id="summary">
-  <div class="compact-row" id="compactRow">
-    <div id="compactRingWrap"></div>
-    <div class="compact-info">
-      <div class="compact-kcal"><span id="totalKcalMini">0</span> kcal</div>
-      <div class="compact-sub">de <span id="goalLabel">2000</span> · <span id="pctLabel">0%</span></div>
-    </div>
-    <div class="compact-rings">
-      <div id="ringC"></div>
-      <div id="ringP"></div>
-      <div id="ringF"></div>
-    </div>
-    <svg class="sum-chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 10l4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </div>
-  <div class="expanded-wrap">
-    <div class="rings-wrap">
-      <div class="big-ring" id="bigRing">
-        <div class="num"><div id="totalKcalBig">0</div><span class="goal-lbl">kcal hoy</span></div>
-      </div>
-      <div class="macro-vals">
-        <span>🍚 C <b id="carbsTotal">0g</b></span>
-        <span>🍗 P <b id="proteinTotal">0g</b></span>
-        <span>🥑 G <b id="fatTotal">0g</b></span>
-      </div>
-    </div>
-  </div>
 </div>
 
 <div class="tabbar" role="tablist" aria-label="Secciones">

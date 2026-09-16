@@ -1,5 +1,5 @@
 if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'caloriasfit-v11' && k !== 'soto-v1') caches.delete(k); }));
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'caloriasfit-v12' && k !== 'soto-v1') caches.delete(k); }));
 }
 
 const DEFAULT_FOODS = {
@@ -203,14 +203,11 @@ function createRing(size, stroke, color){
   svg.appendChild(track); svg.appendChild(prog);
   return { svg, set(p){ prog.style.strokeDashoffset = c * (1 - Math.min(p, 1)); } };
 }
-const compactRing = createRing(40, 5, "#34C759");
-document.getElementById("compactRingWrap").appendChild(compactRing.svg);
 const ringC = createRing(30, 4, "#0A84FF"); document.getElementById("ringC").appendChild(ringC.svg);
 const ringP = createRing(30, 4, "#FF375F"); document.getElementById("ringP").appendChild(ringP.svg);
 const ringF = createRing(30, 4, "#FF9F0A"); document.getElementById("ringF").appendChild(ringF.svg);
-const kcalRing = createRing(120, 12, "#34C759");
+const kcalRing = createRing(150, 14, "#34C759");
 document.getElementById("bigRing").prepend(kcalRing.svg);
-document.getElementById("compactRow").onclick = ()=> document.getElementById("summary").classList.toggle("expanded");
 
 function animateNumber(el, to){
   const from = parseInt(el.dataset.val || "0");
@@ -966,11 +963,8 @@ function macroGoals(){
 }
 function updateSummary(){
   const t = dayTotals(datePicker.value);
-  animateNumber(document.getElementById("totalKcalMini"), t.k);
   animateNumber(document.getElementById("totalKcalBig"), t.k);
   document.getElementById("goalLabel").textContent = goals.kcal;
-  document.getElementById("pctLabel").textContent = Math.round((t.k/goals.kcal)*100) + "%";
-  compactRing.set(t.k / goals.kcal);
   kcalRing.set(t.k / goals.kcal);
   const mg = macroGoals();
   ringC.set(t.c/mg.cg); ringP.set(t.p/mg.pg); ringF.set(t.f/mg.fg);
